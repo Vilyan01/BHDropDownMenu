@@ -14,6 +14,7 @@
 		88ED6F481BE17A670042BF77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88ED6F461BE17A670042BF77 /* LaunchScreen.storyboard */; };
 		88ED6F531BE17A670042BF77 /* DropDownDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88ED6F521BE17A670042BF77 /* DropDownDemoTests.swift */; };
 		88ED6F5E1BE17A670042BF77 /* DropDownDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88ED6F5D1BE17A670042BF77 /* DropDownDemoUITests.swift */; };
+		88ED6F6C1BE189420042BF77 /* BHDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88ED6F6B1BE189420042BF77 /* BHDropDownMenu.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		88ED6F591BE17A670042BF77 /* DropDownDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropDownDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		88ED6F5D1BE17A670042BF77 /* DropDownDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownDemoUITests.swift; sourceTree = "<group>"; };
 		88ED6F5F1BE17A670042BF77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88ED6F6B1BE189420042BF77 /* BHDropDownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BHDropDownMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				88ED6F441BE17A670042BF77 /* Assets.xcassets */,
 				88ED6F461BE17A670042BF77 /* LaunchScreen.storyboard */,
 				88ED6F491BE17A670042BF77 /* Info.plist */,
+				88ED6F6B1BE189420042BF77 /* BHDropDownMenu.swift */,
 			);
 			path = DropDownDemo;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88ED6F401BE17A670042BF77 /* ViewController.swift in Sources */,
+				88ED6F6C1BE189420042BF77 /* BHDropDownMenu.swift in Sources */,
 				88ED6F3E1BE17A670042BF77 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
