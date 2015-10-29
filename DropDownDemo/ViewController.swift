@@ -18,6 +18,8 @@ class ViewController: UIViewController {
         menu.backgroundColor = self.view.backgroundColor!
         menu.barColor = UIColor.whiteColor()
         menu.setBars(3)
+        let menuBtns = NSDictionary(dictionary: ["Test" : "fart", "Test2" : "Fart", "Test3" : "Fart", "Test4" : "fart"])
+        menu.addBtns(menuBtns)
     }
     
     override func viewDidAppear(animated: Bool) {
