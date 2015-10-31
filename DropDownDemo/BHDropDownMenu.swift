@@ -21,20 +21,29 @@ class BHDropDownMenu: UIView {
     let menuItems:NSMutableArray = NSMutableArray()
     let menuSegues:NSMutableArray = NSMutableArray()
     
+    var stage0Frame:CGRect?
+    var stage1Frame:CGRect?
+    
+    //var closeMenuButton:UIView?
+    
     func setButtons(btnNames:NSArray) {
+        //closeMenuButton = UIView(frame: self.frame)
         setBars(btnNames.count - 1)
         var count = 0
         for btnName in btnNames {
             let btnFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
             let btn = UIButton(frame: btnFrame)
             btn.setTitle(btnName as? String, forState: UIControlState.Normal)
-            btn.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0), forState: UIControlState.Normal)
+            btn.setTitleColor(barColor, forState: UIControlState.Normal)
             btn.addTarget(self, action: "performAction:", forControlEvents: UIControlEvents.TouchUpInside)
             btn.tag = count
+            btn.hidden = true
             menuItems.addObject(btn)
             self.addSubview(btn)
             count++
         }
+        //self.addSubview(closeMenuButton!)
+        //closeMenuButton!.hidden = true
     }
     
     func setSegues(segues:NSArray) {
@@ -55,6 +64,7 @@ class BHDropDownMenu: UIView {
             bar.backgroundColor = barColor
             menuBars.addObject(bar)
             self.addSubview(bar)
+            //closeMenuButton?.addSubview(bar)
         }
     }
     
@@ -64,6 +74,7 @@ class BHDropDownMenu: UIView {
         // Drawing code
         let tap = UITapGestureRecognizer(target: self, action: "startAnimation")
         self.addGestureRecognizer(tap)
+        self.stage0Frame = self.frame
     }
     
     func startAnimation() {
@@ -74,8 +85,9 @@ class BHDropDownMenu: UIView {
     func performAction(sender:UIButton) {
         let ind = sender.tag
         if let validVC = parentVC {
-            let segueTitle = menuSegues.objectAtIndex(ind) as! String
-            validVC.performSegueWithIdentifier(segueTitle, sender: self)
+            fadeOut()
+            //let segueTitle = menuSegues.objectAtIndex(ind) as! String
+            //validVC.performSegueWithIdentifier(segueTitle, sender: self)
         }
     }
 }
@@ -94,6 +106,7 @@ extension BHDropDownMenu {
             }) { (comp) -> Void in
                 if(comp == true) {
                     NSLog("Done animating out, now animate down")
+                    self.stage1Frame = self.frame
                     self.animateDown()
                 }
         }
@@ -139,8 +152,49 @@ extension BHDropDownMenu {
         UIView.animateWithDuration(1.0) { () -> Void in
             for(var i = 0; i < self.menuItems.count; i++) {
                 let curMenuItem = self.menuItems.objectAtIndex(i) as! UIButton
-                curMenuItem.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), forState: UIControlState.Normal)
+                curMenuItem.hidden = false
             }
+            //self.closeMenuButton!.hidden = false
+        }
+    }
+    
+    func fadeOut() {
+        self.layer.shadowOpacity = 0
+        UIView.animateWithDuration(1.0, animations: { () -> Void in
+            for(var i = 0; i < self.menuItems.count; i++) {
+                let curMenuItem = self.menuItems.objectAtIndex(i) as! UIButton
+                curMenuItem.hidden = true
+            }
+            }) { (succ) -> Void in
+                self.animateUp()
+        }
+    }
+    
+    func animateUp() {
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.frame = self.stage1Frame!
+            let spacing = self.origHeight! / (self.menuBars.count + 1)
+            for(var i = 0; i < self.menuBars.count; i++) {
+                let curMenuBar = self.menuBars.objectAtIndex(i) as! UIImageView
+                let newYPos = (i + 1) * spacing
+                let barFrame = CGRect(x: 5, y: newYPos, width: Int(self.frame.width) - 10, height: 1)
+                curMenuBar.frame = barFrame
+            }
+            }) { (succ) -> Void in
+                self.animateIn()
+        }
+    }
+    
+    func animateIn() {
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.frame = self.stage0Frame!
+            for(var i = 0; i < self.menuBars.count; i++) {
+                let curMenuBar = self.menuBars.objectAtIndex(i) as! UIImageView
+                let barFrame = CGRect(x: 5, y: Int(curMenuBar.frame.origin.y), width: self.origHeight! - 10, height: 1)
+                curMenuBar.frame = barFrame
+            }
+            }) { (succ) -> Void in
+                
         }
     }
 }
