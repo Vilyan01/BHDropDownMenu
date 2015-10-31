@@ -17,9 +17,11 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         menu.backgroundColor = self.view.backgroundColor!
         menu.barColor = UIColor.whiteColor()
-        menu.setBars(3)
-        let menuBtns = NSDictionary(dictionary: ["Test" : "fart", "Test2" : "Fart", "Test3" : "Fart", "Test4" : "fart"])
-        menu.addBtns(menuBtns)
+        let btnArray = NSArray(array: ["Test", "Test2", "Test3", "Test4"])
+        let segueArray = NSArray(array: ["One","Two","Three","Four"])
+        menu.parentVC = self
+        menu.setSegues(segueArray)
+        menu.setButtons(btnArray)
     }
     
     override func viewDidAppear(animated: Bool) {

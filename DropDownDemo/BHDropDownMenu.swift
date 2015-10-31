@@ -15,10 +15,35 @@ class BHDropDownMenu: UIView {
     var extendedHeight:Int = 160
     var origHeight:Int?
     
+    var parentVC:UIViewController?
+    
     let menuBars:NSMutableArray = NSMutableArray()
     let menuItems:NSMutableArray = NSMutableArray()
+    let menuSegues:NSMutableArray = NSMutableArray()
     
-    func setBars(numBars:Int) {
+    func setButtons(btnNames:NSArray) {
+        setBars(btnNames.count - 1)
+        var count = 0
+        for btnName in btnNames {
+            let btnFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
+            let btn = UIButton(frame: btnFrame)
+            btn.setTitle(btnName as? String, forState: UIControlState.Normal)
+            btn.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0), forState: UIControlState.Normal)
+            btn.addTarget(self, action: "performAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.tag = count
+            menuItems.addObject(btn)
+            self.addSubview(btn)
+            count++
+        }
+    }
+    
+    func setSegues(segues:NSArray) {
+        for segue in segues {
+            menuSegues.addObject(segue)
+        }
+    }
+    
+    private func setBars(numBars:Int) {
         let height = Int(self.frame.height)
         let spacing = height / (numBars + 1)
         extendedHeight = ((numBars + 1) * 40) + Int(self.frame.height)
@@ -33,30 +58,25 @@ class BHDropDownMenu: UIView {
         }
     }
     
-    func addBtns(titlesAndSegues:NSDictionary) {
-        let titles = titlesAndSegues.allKeys
-        for title in titles {
-            let btnFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            let btn = UIButton(frame: btnFrame)
-            btn.setTitle(title as? String, forState: UIControlState.Normal)
-            btn.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0), forState: UIControlState.Normal)
-            menuItems.addObject(btn)
-            self.addSubview(btn)
-        }
-    }
-    
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
         // Drawing code
         let tap = UITapGestureRecognizer(target: self, action: "startAnimation")
         self.addGestureRecognizer(tap)
-        //setBars(3)
     }
     
     func startAnimation() {
         NSLog("Tapped menu")
         self.animateOut()
+    }
+    
+    func performAction(sender:UIButton) {
+        let ind = sender.tag
+        if let validVC = parentVC {
+            let segueTitle = menuSegues.objectAtIndex(ind) as! String
+            validVC.performSegueWithIdentifier(segueTitle, sender: self)
+        }
     }
 }
 
@@ -104,6 +124,12 @@ extension BHDropDownMenu {
             }) { (done) -> Void in
                 NSLog("Done!")
                 if(done == true) {
+                    let path = UIBezierPath(rect: self.bounds)
+                    self.layer.masksToBounds = false
+                    self.layer.shadowColor = UIColor.blackColor().CGColor
+                    self.layer.shadowOffset = CGSizeMake(0.0, 0.5)
+                    self.layer.shadowOpacity = 0.5
+                    self.layer.shadowPath = path.CGPath
                     self.fadeIn()
                 }
         }
